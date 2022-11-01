@@ -23,6 +23,18 @@ import re
 
 def load_data(database_filepath):
     
+    '''
+    Loads the data from the given filepath
+    
+    Parameters:
+        database_filepath (str): The path of the database and file
+        
+    Returns:
+        X (list): Featureset, list of our inputs
+        Y (list): Target values
+        column values (list): list of categories wanted to be classified
+    '''
+    
     engine = create_engine('sqlite:///' + database_filepath + '.db')
     df = pd.read_sql(f"SELECT * FROM disasters", engine)
     
@@ -36,6 +48,17 @@ def load_data(database_filepath):
     return X, Y, list(Y.columns.values)
 
 def tokenize(text):
+    
+    '''
+    Tokenizer of the NLP pipeline, returns the tokenized words
+    
+    Parameters:
+        text (str): Containing a lot of words as one or more sentence
+        
+    Returns:
+        clean_tokens (list): List of seperate words
+    '''
+    
     tokens = word_tokenize(text)
     lemmatizer = WordNetLemmatizer()
 
@@ -48,6 +71,11 @@ def tokenize(text):
 
 
 def build_model():
+    
+    '''
+    Returns the pipeline with tuning
+    
+    '''
     pipeline = Pipeline([
         ('vect', CountVectorizer(tokenizer=tokenize)),
         ('tfidf', TfidfTransformer()),
@@ -66,6 +94,16 @@ def build_model():
 
 def evaluate_model(model, X_test, Y_test, category_names):
     
+    '''
+    Prints different evaluation metrics with respect to given model results
+    
+    Parameters:
+        model: Machine Learning model
+        X_test: test data for features
+        Y_test: test data for targets
+        category_names: list of categories
+    '''
+    
     y_pred = model.predict(X_test)
     for i, c in enumerate(category_names):
         acc = accuracy_score(y_pred[:,i], Y_test[c].values.tolist())
@@ -83,6 +121,12 @@ def evaluate_model(model, X_test, Y_test, category_names):
     
 
 def save_model(model, model_filepath):
+    '''
+    Saves model permanently
+    Parameters:
+        model: The machine learning model
+        model_filepath: The path of the model that will be saved
+    '''
     
     pickle.dump(model, open(model_filepath, 'wb'))
     

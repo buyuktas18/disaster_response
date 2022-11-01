@@ -5,6 +5,15 @@ from sqlalchemy import create_engine
 import numpy as np
 
 def load_data(messages_filepath, categories_filepath):
+    '''
+    Combines two csv files with cleaning
+    Parameters:
+        messages_filepath: Path of the first file
+        categories_filepath: Path of the second file
+        
+    Returns:
+        df: cleaned df
+    '''
     messages = pd.read_csv(messages_filepath)
     categories = pd.read_csv(categories_filepath)
     
@@ -40,10 +49,20 @@ def load_data(messages_filepath, categories_filepath):
     
     return df
 def clean_data(df):
+    '''
+    Drop duplicates of the given df and return it
+    '''
     df.drop_duplicates(inplace=True)
     return df
 
 def save_data(df, database_filename):
+    '''
+    Saves formatted data to SQL database
+    
+    Parameters:
+        df: the dataframe which keeps the table content
+        database_filename: Name of the sqlite database file
+    '''
     engine = create_engine('sqlite:///' + database_filename + '.db')
     df.to_sql('disasters', engine, index=False)
 
