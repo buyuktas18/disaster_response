@@ -84,13 +84,13 @@ def build_model():
     
     parameters = {
         'vect__ngram_range': ((1, 1), (1, 2)),
-        'clf__estimator__max_depth': [5,8, 10]
+        'clf__estimator__min_samples_split': [2, 5, 10]
     }
 
-    cv = GridSearchCV(pipeline, param_grid=parameters)
+    #cv = GridSearchCV(pipeline, param_grid=parameters)
     
     
-    return cv
+    return pipeline
 
 def evaluate_model(model, X_test, Y_test, category_names):
     
@@ -106,17 +106,19 @@ def evaluate_model(model, X_test, Y_test, category_names):
     
     y_pred = model.predict(X_test)
     for i, c in enumerate(category_names):
-        acc = accuracy_score(y_pred[:,i], Y_test[c].values.tolist())
-        f1 = f1_score(y_pred[:,i], Y_test[c].values.tolist())
-        p = precision_score(y_pred[:,i], Y_test[c].values.tolist())
-        r = recall_score(y_pred[:,i], Y_test[c].values.tolist())
+        try: 
+            acc = accuracy_score(y_pred[:,i], Y_test[c].values.tolist())
+            f1 = f1_score(y_pred[:,i], Y_test[c].values.tolist())
+            p = precision_score(y_pred[:,i], Y_test[c].values.tolist())
+            r = recall_score(y_pred[:,i], Y_test[c].values.tolist())
         
-        print(f"for column {c}: ")
-        print('\t' + f"Accuracy: {acc}")
-        print('\t' + f"F1 score: {f1}") 
-        print('\t' + f"Precision: {p}") 
-        print('\t' + f"Recall: {r}") 
-        
+            print(f"for column {c}: ")
+            print('\t' + f"Accuracy: {acc}")
+            print('\t' + f"F1 score: {f1}") 
+            print('\t' + f"Precision: {p}") 
+            print('\t' + f"Recall: {r}") 
+        except:
+            print("This column couln't be evaluated since it is not containing any true sample")
     
     
 
