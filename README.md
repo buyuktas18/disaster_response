@@ -16,14 +16,14 @@ The purpose of this project is to classify the main needs according to disaster 
     
 ### Files 
 
-- **data/process.py: ** This file for processing data. It reads messages and categories from seperate csv files, combines them by using some transformations and keep the organised result in SQL database. 
+- ** data/process.py: ** This file for processing data. It reads messages and categories from seperate csv files, combines them by using some transformations and keep the organised result in SQL database. 
 
-- **model/classifier.py: ** This file is using for creating the machine learning model and also apply some NLP functions such as tokenizer and tf-idf. A pipeline is defined in this file to work with model easily. Then the trained model is saved as .pkl file.
+- ** model/classifier.py: ** This file is using for creating the machine learning model and also apply some NLP functions such as tokenizer and tf-idf. A pipeline is defined in this file to work with model easily. Then the trained model is saved as .pkl file.
 
-- **data/messages.csv: ** This file keeps the records of messages
-- **data/categories.csv: ** This file keeps the records of categories
+- ** data/messages.csv: ** This file keeps the records of messages
+- ** data/categories.csv: ** This file keeps the records of categories
 
-- **app/run.py: ** This is the web application created by Flask
+- ** app/run.py: ** This is the web application created by Flask
 
 ### Instructions:
 1. Run the following commands in the project's root directory to set up your database and model.
