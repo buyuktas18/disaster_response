@@ -26,7 +26,7 @@ def tokenize(text):
     return clean_tokens
 
 # load data
-engine = create_engine('sqlite:///../data/DisasterResponse.db')
+engine = create_engine('sqlite:///../data/DisasterResponse.db.db')
 df = pd.read_sql_table('disasters', engine)
 
 # load model
@@ -113,6 +113,7 @@ def go():
     # use model to predict classification for query
     classification_labels = model.predict([query])[0]
     classification_results = dict(zip(df.columns[5:], classification_labels))
+    classification_results["child_alone"] = 0
 
     # This will render the go.html Please see that file. 
     return render_template(

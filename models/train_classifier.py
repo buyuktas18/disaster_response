@@ -7,6 +7,7 @@ import pandas as pd
 import numpy as np
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 from sklearn.naive_bayes import GaussianNB
+from sklearn.svm import LinearSVC
 from sklearn.linear_model import LogisticRegression
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
@@ -41,6 +42,13 @@ def load_data(database_filepath):
     
     X = df["message"]
     Y = df.iloc[:,5:]
+    
+    print(Y.columns)
+    
+    for c in Y:
+        if Y[c].values.tolist().count(1) == 0:
+            Y.drop(columns=c, inplace=True)
+            print(c)
     
    
     
@@ -83,11 +91,11 @@ def build_model():
     ])
     
     parameters = {
-        'vect__ngram_range': ((1, 1), (1, 2)),
-        'clf__estimator__min_samples_split': [2, 5, 10]
+        #'vect__ngram_range': ((1, 1), (1, 2)),
+        'clf__estimator__penalty': ["l1","l2"]
     }
 
-    #cv = GridSearchCV(pipeline, param_grid=parameters)
+    cv = GridSearchCV(pipeline, param_grid=parameters)
     
     
     return pipeline
@@ -106,7 +114,8 @@ def evaluate_model(model, X_test, Y_test, category_names):
     
     y_pred = model.predict(X_test)
     for i, c in enumerate(category_names):
-        try: 
+        if Y_test[c].values.tolist().count(1) > 0 and list(y_pred[:,i]).count(1) > 0:
+            
             acc = accuracy_score(y_pred[:,i], Y_test[c].values.tolist())
             f1 = f1_score(y_pred[:,i], Y_test[c].values.tolist())
             p = precision_score(y_pred[:,i], Y_test[c].values.tolist())
@@ -117,7 +126,7 @@ def evaluate_model(model, X_test, Y_test, category_names):
             print('\t' + f"F1 score: {f1}") 
             print('\t' + f"Precision: {p}") 
             print('\t' + f"Recall: {r}") 
-        except:
+        else:
             print("This column couln't be evaluated since it is not containing any true sample")
     
     
@@ -140,7 +149,6 @@ def main():
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
         X, Y, category_names = load_data(database_filepath)
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
-        
         print('Building model...')
         model = build_model()
         

@@ -53,6 +53,7 @@ def clean_data(df):
     Drop duplicates of the given df and return it
     '''
     df.drop_duplicates(inplace=True)
+    df.drop(columns="child_alone", inplace=True)
     return df
 
 def save_data(df, database_filename):
@@ -63,6 +64,8 @@ def save_data(df, database_filename):
         df: the dataframe which keeps the table content
         database_filename: Name of the sqlite database file
     '''
+
+    
     engine = create_engine('sqlite:///' + database_filename + '.db')
     df.to_sql('disasters', engine, index=False)
 
