@@ -87,18 +87,21 @@ def build_model():
     pipeline = Pipeline([
         ('vect', CountVectorizer(tokenizer=tokenize)),
         ('tfidf', TfidfTransformer()),
-        ('clf', MultiOutputClassifier(RandomForestClassifier()))
+        ('clf', MultiOutputClassifier(LogisticRegression()))
     ])
     
     parameters = {
-        #'vect__ngram_range': ((1, 1), (1, 2)),
-        'clf__estimator__penalty': ["l1","l2"]
+        
+        'clf__estimator__penalty': ["l1","l2"],
+        'clf__C' : np.logspace(-4, 4, 50)
+        
     }
+    
 
     cv = GridSearchCV(pipeline, param_grid=parameters)
     
     
-    return pipeline
+    return cv
 
 def evaluate_model(model, X_test, Y_test, category_names):
     
