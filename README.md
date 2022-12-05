@@ -1,4 +1,11 @@
+<<<<<<< HEAD
+# disaster_response
+An ETL and NLP pipeline which extracts meaning from disaster texts
+=======
 # Disaster Response Pipeline Project
+
+## Purpose
+In this project, the aim is to help people and charities in case of emergency. How it will do it? It will receive a text which is written during or just after the disaster and try to match the topics belonging to that text. By using this application, foundations or charities could extract the amount of need and the situation of the disaster. Since these parameters would be more visible, people who need help could get the response faster.
 
 The purpose of this project is to classify the main needs according to disaster tweets. This will be a multiclass classification since a tweet could be belong to several topics. Basic NLP pipeline has been constructed to solve this problem. The main points in this pipeline can be briefly listed as:
 - ETL pipeline
@@ -38,3 +45,4 @@ The purpose of this project is to classify the main needs according to disaster 
 3. Run your web app: `python run.py`
 
 4. Click the `PREVIEW` button to open the homepage
+>>>>>>> master
