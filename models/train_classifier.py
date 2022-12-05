@@ -93,7 +93,7 @@ def build_model():
     parameters = {
         
         'clf__estimator__penalty': ["l1","l2"],
-        'clf__C' : np.logspace(-4, 4, 50)
+        'clf__estimator__C' : np.logspace(-4, 4, 50)
         
     }
     
